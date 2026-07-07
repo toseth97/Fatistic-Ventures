@@ -3,16 +3,17 @@ import { authenticateAdmin } from "@/lib/auth";
 
 export async function POST(req) {
     try {
-        const { email, password } = await req.json();
+        const body = await req.json().catch(() => ({}));
+        const { email, username, password } = body || {};
 
-        if (!email || !password) {
+        if ((!email && !username) || !password) {
             return NextResponse.json(
-                { error: "Email and password are required" },
+                { error: "Username (or email) and password are required" },
                 { status: 400 },
             );
         }
 
-        const result = await authenticateAdmin(email, password);
+        const result = await authenticateAdmin({ email, username, password });
 
         if (!result) {
             return NextResponse.json(
@@ -24,7 +25,11 @@ export async function POST(req) {
         return NextResponse.json(
             {
                 token: result.token,
-                user: { id: result.id, email: result.email, role: result.role },
+                user: {
+                    id: result.id,
+                    email: result.email,
+                    role: result.role,
+                },
             },
             { status: 200 },
         );

