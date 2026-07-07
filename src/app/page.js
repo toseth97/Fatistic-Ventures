@@ -5,8 +5,8 @@ export default function HomePage() {
     return (
         <main className="relative">
             {/* Hero Section */}
-            <section className="relative w-full min-h-[70vh] overflow-hidden flex items-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-gold-50 via-white to-grey-50" />
+            <section className="relative w-full min-h-[75vh] overflow-hidden flex items-center pt-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-cream via-white to-accent/10" />
                 <div
                     className="absolute inset-0 opacity-[0.03]"
                     style={{
@@ -21,7 +21,7 @@ export default function HomePage() {
                                 title="Fatistic Ventures"
                                 subtitle="Aso-Oke Guru — Luxury | Quality | Elegance"
                                 titleClassName="font-display text-4xl sm:text-5xl md:text-6xl font-semibold text-charcoal leading-tight"
-                                subtitleClassName="mt-3 text-accent font-medium text-lg tracking-wide"
+                                subtitleClassName="mt-3 text-accent font-semibold text-lg tracking-wide"
                             />
 
                             <p className="mt-6 text-soft-grey max-w-xl leading-relaxed text-base">

@@ -32,9 +32,9 @@ export default function RootLayout({ children }) {
                     rel="stylesheet"
                 />
             </head>
-            <body className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 text-charcoal antialiased font-sans overflow-x-hidden">
+            <body className="min-h-screen bg-gradient-to-br from-cream via-white to-accent/10 text-charcoal antialiased font-sans overflow-x-hidden">
                 <Header />
-                <main className="min-h-screen pt-20 md:pt-24">{children}</main>
+                <main className="min-h-screen pt-28 md:pt-32">{children}</main>
                 <Footer />
                 <PageTracker />
             </body>

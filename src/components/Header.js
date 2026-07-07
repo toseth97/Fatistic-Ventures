@@ -30,33 +30,25 @@ export default function Header() {
         <header
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
                 scrolled
-                    ? "backdrop-blur-xl bg-white/85 shadow-lg shadow-black/5 border-b border-amber-200/30"
+                    ? "backdrop-blur-xl bg-white/85 shadow-lg shadow-black/5 border-b border-accent/20"
                     : "backdrop-blur-sm bg-white/60"
             }`}
         >
             <div className="mx-auto max-w-7xl px-4 sm:px-6">
                 <div className="flex items-center justify-between h-16 md:h-20">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-3 group">
-                        <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 p-0.5 shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 transition-all duration-300">
-                            <div className="w-full h-full rounded-[10px] bg-white flex items-center justify-center overflow-hidden">
+                    <Link href="/" className="flex items-center gap-3">
+                        <div className="relative w-14 h-14 md:w-16 md:h-16 overflow-hidden rounded-2xl bg-accent p-0.5 shadow-lg shadow-accent/25 transition-all duration-300">
+                            <div className="w-full h-full rounded-[16px] bg-white flex items-center justify-center overflow-hidden">
                                 <Image
                                     src={Logo}
                                     alt="Fatistic Ventures"
-                                    width={160}
-                                    height={100}
+                                    width={96}
+                                    height={96}
                                     className="object-contain w-full h-full"
                                     priority
                                 />
                             </div>
-                        </div>
-                        <div className="hidden sm:block">
-                            <span className="font-display text-lg md:text-xl font-bold bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 bg-clip-text text-transparent">
-                                Fatistic
-                            </span>
-                            <span className="text-amber-500 font-bold text-lg md:text-xl">
-                                .
-                            </span>
                         </div>
                     </Link>
 
@@ -68,21 +60,18 @@ export default function Header() {
                                 href={link.href}
                                 className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                                     isActive(link.href)
-                                        ? "text-amber-700 bg-amber-50 shadow-sm"
-                                        : "text-gray-600 hover:text-amber-600 hover:bg-amber-50/50"
+                                        ? "text-white bg-accent shadow-sm shadow-accent/20"
+                                        : "text-accent/90 hover:text-accent hover:bg-accent/10"
                                 }`}
                             >
                                 {link.label}
-                                {isActive(link.href) && (
-                                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full" />
-                                )}
                             </Link>
                         ))}
                         <a
                             href="https://wa.me/2348062572564"
                             target="_blank"
                             rel="noreferrer"
-                            className="ml-3 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-medium shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 hover:scale-105 transition-all duration-300"
+                            className="ml-3 px-5 py-2.5 rounded-xl bg-accent text-white text-sm font-medium shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 hover:scale-105 transition-all duration-300"
                         >
                             <span className="flex items-center gap-2">
                                 <svg
@@ -100,11 +89,11 @@ export default function Header() {
                     {/* Mobile hamburger */}
                     <button
                         onClick={() => setMobileOpen(!mobileOpen)}
-                        className="md:hidden p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 transition-colors"
+                        className="md:hidden p-2.5 rounded-xl bg-accent/10 hover:bg-accent/15 transition-colors"
                         aria-label="Toggle menu"
                     >
                         <svg
-                            className="w-5 h-5 text-amber-700"
+                            className="w-5 h-5 text-accent"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -130,7 +119,7 @@ export default function Header() {
 
                 {/* Mobile nav */}
                 {mobileOpen && (
-                    <div className="md:hidden pb-5 border-t border-amber-200/30 pt-3 animate-fade-in">
+                    <div className="md:hidden pb-5 border-t border-accent/20 pt-3 animate-fade-in">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
@@ -138,8 +127,8 @@ export default function Header() {
                                 onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all mb-1 ${
                                     isActive(link.href)
-                                        ? "bg-amber-50 text-amber-700"
-                                        : "text-gray-600 hover:text-amber-600 hover:bg-amber-50/50"
+                                        ? "bg-accent/10 text-accent"
+                                        : "text-accent/80 hover:text-accent hover:bg-accent/10"
                                 }`}
                             >
                                 {link.label}
@@ -149,7 +138,7 @@ export default function Header() {
                             href="https://wa.me/2348062572564"
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center justify-center gap-2 mt-2 px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-medium"
+                            className="flex items-center justify-center gap-2 mt-2 px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium shadow-lg shadow-accent/25 transition-all duration-300"
                         >
                             <svg
                                 className="w-4 h-4"

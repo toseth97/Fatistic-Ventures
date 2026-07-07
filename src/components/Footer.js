@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import Logo from "../../publicimages/LOGO.png";
 
 export default function Footer() {
     return (
-        <footer className="relative mt-auto overflow-hidden">
+        <footer className="relative mt-auto overflow-hidden bg-accent text-white">
             {/* Gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-900 via-amber-800 to-orange-900" />
+            <div className="absolute inset-0 bg-gradient-to-br from-accent to-[#7A0E52]" />
             <div
                 className="absolute inset-0 opacity-10"
                 style={{
@@ -19,28 +20,26 @@ export default function Footer() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                     {/* Brand */}
                     <div className="animate-slide-up">
-                        <div className="flex items-center gap-3">
-                            <div className="relative w-10 h-10 rounded-xl bg-white/20 p-0.5 backdrop-blur-sm">
-                                <div className="w-full h-full rounded-[10px] bg-white/90 flex items-center justify-center overflow-hidden">
+                        <div className="flex items-center gap-4">
+                            <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-white/10 p-1 backdrop-blur-sm">
+                                <div className="w-full h-full rounded-[20px] bg-white flex items-center justify-center overflow-hidden">
                                     <Image
-                                        src="/images/LOGO.png"
+                                        src={Logo}
                                         alt="Fatistic Ventures"
-                                        width={36}
-                                        height={36}
+                                        width={96}
+                                        height={96}
                                         className="object-contain"
+                                        priority
                                     />
                                 </div>
                             </div>
                             <div>
-                                <span className="font-display text-lg font-bold text-white">
-                                    Fatistic
-                                </span>
-                                <span className="text-amber-400 font-bold">
-                                    .
+                                <span className="font-display text-2xl font-bold text-white">
+                                    Fatistic Ventures
                                 </span>
                             </div>
                         </div>
-                        <p className="mt-4 text-sm text-amber-100/80 leading-relaxed">
+                        <p className="mt-4 text-sm text-white/85 leading-relaxed">
                             Aso-Oke Guru — Luxury | Quality | Elegance. Premium
                             Nigerian fabrics delivered nationwide and worldwide.
                         </p>
@@ -87,7 +86,7 @@ export default function Footer() {
                         className="animate-slide-up"
                         style={{ animationDelay: "0.1s" }}
                     >
-                        <h3 className="text-sm font-semibold text-amber-300 uppercase tracking-wider">
+                        <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
                             Shop
                         </h3>
                         <ul className="mt-4 space-y-3">
@@ -95,7 +94,7 @@ export default function Footer() {
                                 <li key={cat}>
                                     <Link
                                         href={`/shop?category=${encodeURIComponent(cat)}`}
-                                        className="text-sm text-amber-100/70 hover:text-white hover:translate-x-1 transition-all duration-200 inline-block"
+                                        className="text-sm text-white/70 hover:text-white hover:translate-x-1 transition-all duration-200 inline-block"
                                     >
                                         {cat}
                                     </Link>
@@ -104,7 +103,7 @@ export default function Footer() {
                             <li>
                                 <Link
                                     href="/shop"
-                                    className="text-sm text-amber-100/70 hover:text-white hover:translate-x-1 transition-all duration-200 inline-block"
+                                    className="text-sm text-white/70 hover:text-white hover:translate-x-1 transition-all duration-200 inline-block"
                                 >
                                     All Fabrics →
                                 </Link>
@@ -117,7 +116,7 @@ export default function Footer() {
                         className="animate-slide-up"
                         style={{ animationDelay: "0.2s" }}
                     >
-                        <h3 className="text-sm font-semibold text-amber-300 uppercase tracking-wider">
+                        <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
                             Company
                         </h3>
                         <ul className="mt-4 space-y-3">
@@ -128,7 +127,7 @@ export default function Footer() {
                                 <li key={link.href}>
                                     <Link
                                         href={link.href}
-                                        className="text-sm text-amber-100/70 hover:text-white hover:translate-x-1 transition-all duration-200 inline-block"
+                                        className="text-sm text-white/70 hover:text-white hover:translate-x-1 transition-all duration-200 inline-block"
                                     >
                                         {link.label}
                                     </Link>
@@ -142,10 +141,10 @@ export default function Footer() {
                         className="animate-slide-up"
                         style={{ animationDelay: "0.3s" }}
                     >
-                        <h3 className="text-sm font-semibold text-amber-300 uppercase tracking-wider">
+                        <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
                             Contact
                         </h3>
-                        <ul className="mt-4 space-y-3 text-sm text-amber-100/70">
+                        <ul className="mt-4 space-y-3 text-sm text-white/80">
                             <li className="flex items-start gap-2">
                                 <span className="mt-0.5">📍</span>
                                 <span>
@@ -174,7 +173,7 @@ export default function Footer() {
                                     href="https://wa.me/2348062572564"
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-medium hover:shadow-lg hover:shadow-amber-500/30 transition-all duration-300"
+                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-accent text-white text-sm font-medium hover:shadow-lg hover:shadow-accent/30 transition-all duration-300"
                                 >
                                     <svg
                                         className="w-4 h-4"
@@ -191,11 +190,11 @@ export default function Footer() {
                 </div>
 
                 <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p className="text-xs text-amber-100/50">
+                    <p className="text-xs text-white/50">
                         &copy; {new Date().getFullYear()} Fatistic Ventures. All
                         rights reserved.
                     </p>
-                    <p className="text-xs text-amber-100/50 flex items-center gap-1">
+                    <p className="text-xs text-white/50 flex items-center gap-1">
                         <span>🚚</span> Delivering nationwide & worldwide
                     </p>
                 </div>

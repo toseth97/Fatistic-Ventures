@@ -4,6 +4,7 @@
   --color-cream: #F5F0EB;
   --color-charcoal: #1A1A1A;
   --color-soft-grey: #6B7280;
+  --color-accent: #B70B68;
   --color-gold-50: #FFF9E6;
   --color-gold-100: #FFF0B3;
   --color-gold-200: #FFE680;
@@ -54,8 +55,8 @@
   --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   --shadow-glass-sm: 0 4px 16px 0 rgba(31, 38, 135, 0.10);
   --shadow-glass-lg: 0 12px 48px 0 rgba(31, 38, 135, 0.20);
-  --shadow-glow: 0 0 20px rgba(230, 184, 0, 0.3);
-  --shadow-glow-burgundy: 0 0 20px rgba(184, 58, 100, 0.3);
+  --shadow-glow: 0 0 20px rgba(183, 11, 104, 0.25);
+  --shadow-glow-burgundy: 0 0 20px rgba(183, 11, 104, 0.32);
   --shadow-warm: 0 4px 20px rgba(230, 184, 0, 0.15);
   --radius-glass: 16px;
   --radius-glass-lg: 20px;

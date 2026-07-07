@@ -9,7 +9,7 @@ export default function GlassButton({
             ? "bg-burgundy-700/20 border-burgundy-400/30 text-cream hover:bg-burgundy-700/30"
             : variant === "emerald"
               ? "bg-emerald-700/20 border-emerald-400/30 text-cream hover:bg-emerald-700/30"
-              : "bg-gold-600/20 border-gold-300/30 text-cream hover:bg-gold-600/30";
+              : "bg-accent/20 border-accent/30 text-white hover:bg-accent/30";
 
     return (
         <button

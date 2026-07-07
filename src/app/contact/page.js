@@ -5,8 +5,8 @@ export default function ContactPage() {
     return (
         <main className="mx-auto max-w-6xl px-4 py-10">
             <div className="max-w-4xl mx-auto">
-                <section className="relative rounded-glass-lg overflow-hidden border border-gray-200/50 bg-white/60 backdrop-blur-md shadow-glass-lg">
-                    <div className="absolute inset-0 bg-gradient-to-br from-white via-cream to-white" />
+                <section className="relative rounded-glass-lg overflow-hidden border border-gray-200/50 bg-white/80 backdrop-blur-md shadow-glass-lg">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white via-cream to-accent/10" />
                     <div
                         className="absolute inset-0 opacity-10"
                         style={{
@@ -18,8 +18,8 @@ export default function ContactPage() {
                         <HeroTextAnimator
                             title="Contact Fatistic Ventures"
                             subtitle="Orders, inquiries, and availability checks"
-                            titleClassName="font-display text-4xl sm:text-5xl font-semibold text-charcoal leading-tight"
-                            subtitleClassName="mt-3 text-accent font-medium text-lg tracking-wide"
+                            titleClassName="font-display text-4xl sm:text-5xl md:text-6xl font-semibold text-charcoal leading-tight"
+                            subtitleClassName="mt-3 text-accent font-semibold text-lg tracking-tight"
                         />
 
                         <p className="text-soft-grey mt-6 leading-relaxed text-lg">
@@ -98,9 +98,9 @@ export default function ContactPage() {
                         </p>
 
                         <div className="mt-4 rounded-glass-sm overflow-hidden border border-gray-200/50">
-                            <div className="w-full aspect-[4/3] bg-gradient-to-br from-gold-50 to-grey-100 flex items-center justify-center text-soft-grey text-sm relative">
-                                <div className="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-accent/10 blur-xl" />
-                                <div className="absolute -bottom-10 -right-10 w-28 h-28 rounded-full bg-gold-500/20 blur-xl" />
+                            <div className="w-full aspect-[4/3] bg-gradient-to-br from-accent/10 to-white flex items-center justify-center text-soft-grey text-sm relative">
+                                <div className="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-accent/15 blur-xl" />
+                                <div className="absolute -bottom-10 -right-10 w-28 h-28 rounded-full bg-accent/20 blur-xl" />
                                 <div className="text-center p-4 relative">
                                     <div className="text-4xl mb-2">📍</div>
                                     <p className="font-medium text-charcoal">
