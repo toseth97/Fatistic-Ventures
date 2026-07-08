@@ -51,6 +51,11 @@ export default function AdminProductsPage() {
         }
     }
 
+    const totalQuantity = products.reduce(
+        (sum, p) => sum + (Number(p.quantity) || 0),
+        0,
+    );
+
     if (loading) {
         return (
             <div className="space-y-4">
@@ -77,6 +82,11 @@ export default function AdminProductsPage() {
                     <p className="text-sm text-soft-grey mt-1">
                         {products.length} product{products.length !== 1 && "s"}{" "}
                         total
+                        {totalQuantity > 0 && (
+                            <span className="ml-2">
+                                · {totalQuantity} units in stock
+                            </span>
+                        )}
                     </p>
                 </div>
                 <Link
@@ -114,6 +124,7 @@ export default function AdminProductsPage() {
                                 ? product.price
                                 : Number(product.price || 0);
                         const img = product.images?.[0]?.url;
+                        const qty = Number(product.quantity) || 0;
 
                         return (
                             <div
@@ -143,10 +154,23 @@ export default function AdminProductsPage() {
                                             {product.category}
                                         </span>
                                     </div>
-                                    <div className="text-sm text-soft-grey mt-0.5">
-                                        ₦{price.toLocaleString()}
+                                    <div className="text-sm text-soft-grey mt-0.5 flex items-center gap-2">
+                                        <span>₦{price.toLocaleString()}</span>
+                                        <span className="text-gray-300">|</span>
+                                        <span className="text-xs">
+                                            Qty:{" "}
+                                            <span
+                                                className={
+                                                    qty === 0
+                                                        ? "text-red-500"
+                                                        : "text-emerald-600"
+                                                }
+                                            >
+                                                {qty}
+                                            </span>
+                                        </span>
                                         {!product.inStock && (
-                                            <span className="ml-2 text-red-500">
+                                            <span className="ml-1 text-red-500 text-xs">
                                                 Out of stock
                                             </span>
                                         )}

@@ -36,6 +36,7 @@ export default function AdminLayout({ children }) {
     const navLinks = [
         { href: "/admin", label: "Dashboard", icon: "📊" },
         { href: "/admin/products", label: "Products", icon: "🧵" },
+        { href: "/admin/categories", label: "Categories", icon: "📂" },
         { href: "/admin/analytics", label: "Analytics", icon: "📈" },
     ];
 

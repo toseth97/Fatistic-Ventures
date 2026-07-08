@@ -16,10 +16,10 @@ export async function POST(req) {
         // Clear existing data
         await Promise.all([Product.deleteMany({}), AdminUser.deleteMany({})]);
 
-        // Create admin user
-        const hashedPassword = await bcrypt.hash("admin123", 12);
+        const hashedPassword = await bcrypt.hash("FatisticAdmin$", 12);
         await AdminUser.create({
             email: "admin@fatistic.com",
+            username: "fatistic_admin",
             hashedPassword,
             role: "admin",
         });

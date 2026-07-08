@@ -2,6 +2,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageTracker from "@/components/PageTracker";
+import AuthSessionProvider from "@/context/SessionProvider";
 
 export const metadata = {
     title: "Fatistic Ventures — Aso-Oke Guru",
@@ -33,10 +34,14 @@ export default function RootLayout({ children }) {
                 />
             </head>
             <body className="min-h-screen bg-gradient-to-br from-cream via-white to-accent/10 text-charcoal antialiased font-sans overflow-x-hidden">
-                <Header />
-                <main className="min-h-screen pt-28 md:pt-32">{children}</main>
-                <Footer />
-                <PageTracker />
+                <AuthSessionProvider>
+                    <Header />
+                    <main className="min-h-screen pt-16 md:pt-18">
+                        {children}
+                    </main>
+                    <Footer />
+                    <PageTracker />
+                </AuthSessionProvider>
             </body>
         </html>
     );
