@@ -16,7 +16,7 @@ export default function ContactPage() {
                     />
                     <div className="relative p-8 md:p-10">
                         <HeroTextAnimator
-                            title="Contact Fatistic Ventures"
+                            title="Contact Us "
                             subtitle="Orders, inquiries, and availability checks"
                             titleClassName="font-display text-4xl sm:text-5xl md:text-6xl font-semibold text-charcoal leading-tight"
                             subtitleClassName="mt-3 text-accent font-semibold text-lg tracking-tight"
