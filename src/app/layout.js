@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
             <body className="min-h-screen bg-gradient-to-br from-cream via-white to-accent/10 text-charcoal antialiased font-sans overflow-x-hidden">
                 <AuthSessionProvider>
                     <Header />
-                    <main className="min-h-screen pt-16 md:pt-18">
+                    <main className="min-h-screen pt-8 md:pt-18">
                         {children}
                     </main>
                     <Footer />
