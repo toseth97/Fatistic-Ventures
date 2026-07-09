@@ -30,6 +30,20 @@ const userSchema = new mongoose.Schema(
             default: "",
             trim: true,
         },
+        authType: {
+            type: String,
+            enum: ["google", "local"],
+            default: "google",
+        },
+        provider: {
+            type: String,
+            default: "google",
+            trim: true,
+        },
+        lastLoginAt: {
+            type: Date,
+            default: null,
+        },
     },
     { timestamps: true },
 );

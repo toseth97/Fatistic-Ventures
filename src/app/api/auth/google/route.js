@@ -44,6 +44,9 @@ export async function POST(req) {
                 name: tokenInfo.name || tokenInfo.email,
                 picture: tokenInfo.picture || "",
                 locale: tokenInfo.locale || "",
+                authType: "google",
+                provider: "google",
+                lastLoginAt: new Date(),
             },
             { upsert: true, new: true, setDefaultsOnInsert: true },
         ).lean();

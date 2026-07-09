@@ -6,6 +6,8 @@ import { connectDB } from "@/lib/db";
 const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-change-me";
 const adminUsername = process.env.ADMIN_USERNAME?.trim().toLowerCase();
 const adminPassword = process.env.ADMIN_PASSWORD?.trim();
+const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase() ||
+    (adminUsername ? `${adminUsername}@fatistic.com` : "admin@fatistic.com");
 
 export async function hashPassword(password) {
     return bcrypt.hash(password, 12);
@@ -35,48 +37,49 @@ export async function authenticateAdmin({ email, username, password } = {}) {
 
     if (!normalizedEmail && !normalizedUsername) return null;
 
-    if (adminUsername && adminPassword) {
-        if (
-            normalizedUsername === adminUsername &&
-            password === adminPassword
-        ) {
-            return {
-                id: "admin_env",
-                email: "admin@fatistic.com",
-                role: "admin",
-                token: signToken({
-                    id: "admin_env",
-                    email: "admin@fatistic.com",
-                    role: "admin",
-                    username: adminUsername,
-                }),
-            };
-        }
-    }
-
-    // DB-based flow
     await connectDB();
 
-    const user = await AdminUser.findOne({
+    const lookupCriteria = {
         $or: [
             normalizedEmail ? { email: normalizedEmail } : null,
             normalizedUsername ? { username: normalizedUsername } : null,
         ].filter(Boolean),
-    });
+    };
 
-    if (!user) return null;
+    let adminUser = await AdminUser.findOne(lookupCriteria);
 
-    const valid = await verifyPassword(password, user.hashedPassword);
+    if (adminUsername && adminPassword && !adminUser) {
+        adminUser = await AdminUser.findOne({
+            $or: [{ username: adminUsername }, { email: adminEmail }],
+        });
+    }
+
+    if (adminUsername && adminPassword && !adminUser) {
+        adminUser = await AdminUser.create({
+            username: adminUsername,
+            email: adminEmail,
+            hashedPassword: await hashPassword(adminPassword),
+            role: "admin",
+        });
+    }
+
+    if (!adminUser) return null;
+
+    const valid = await verifyPassword(password, adminUser.hashedPassword);
     if (!valid) return null;
 
+    await AdminUser.findByIdAndUpdate(adminUser._id, {
+        $set: { lastLoginAt: new Date() },
+    });
+
     return {
-        id: user._id.toString(),
-        email: user.email,
-        role: user.role,
+        id: adminUser._id.toString(),
+        email: adminUser.email,
+        role: adminUser.role,
         token: signToken({
-            id: user._id.toString(),
-            email: user.email,
-            role: user.role,
+            id: adminUser._id.toString(),
+            email: adminUser.email,
+            role: adminUser.role,
         }),
     };
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import AnalyticsEvent from "@/models/AnalyticsEvent";
 import Product from "@/models/Product";
 import { connectDB } from "@/lib/db";
+import mongoose from "mongoose";
 
 await connectDB().catch(() => null);
 
@@ -22,26 +23,17 @@ export async function GET(req) {
         const since = new Date();
         since.setDate(since.getDate() - rangeDays);
 
-        const [
-            totalEvents,
-            totalPageViews,
-            totalProductViews,
-            totalWhatsappClicks,
-        ] = await Promise.all([
-            AnalyticsEvent.countDocuments({ timestamp: { $gte: since } }),
-            AnalyticsEvent.countDocuments({
-                type: "page_view",
-                timestamp: { $gte: since },
-            }),
-            AnalyticsEvent.countDocuments({
-                type: "product_view",
-                timestamp: { $gte: since },
-            }),
-            AnalyticsEvent.countDocuments({
-                type: "whatsapp_click",
-                timestamp: { $gte: since },
-            }),
-        ]);
+        const summaryDoc = await mongoose.models.AnalyticsSummary?.findOne({
+            key: "site",
+        })?.lean();
+
+        const summaryTotals = summaryDoc?.totals || {};
+        const totalEvents = summaryTotals.totalEvents || 0;
+        const totalPageViews = summaryTotals.pageViews || 0;
+        const totalProductViews = summaryTotals.productViews || 0;
+        const totalWhatsappClicks = summaryTotals.whatsappClicks || 0;
+        const desktopVisits = summaryTotals.desktopVisits || 0;
+        const mobileVisits = summaryTotals.mobileVisits || 0;
 
         const productViews = await AnalyticsEvent.aggregate([
             {
@@ -127,6 +119,8 @@ export async function GET(req) {
                     pageViews: totalPageViews,
                     productViews: totalProductViews,
                     whatsappClicks: totalWhatsappClicks,
+                    desktopVisits,
+                    mobileVisits,
                 },
                 topViewed,
                 topWhatsApp,

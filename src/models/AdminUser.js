@@ -18,6 +18,7 @@ const adminUserSchema = new mongoose.Schema(
             trim: true,
         },
         role: { type: String, default: "admin", enum: ["admin", "user"] },
+        lastLoginAt: { type: Date, default: null },
     },
     { timestamps: true },
 );
