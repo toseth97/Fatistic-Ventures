@@ -1,6 +1,14 @@
 import Link from "next/link";
 import GlassCard from "@/components/ui/GlassCard";
 
+const categoryFilters = [
+    { label: "All", value: "" },
+    { label: "Aso-Oke", value: "Aso-Oke" },
+    { label: "Damask", value: "Damask" },
+    { label: "Gele", value: "Gele" },
+    { label: "Others", value: "Other" },
+];
+
 export default async function ShopPage({ searchParams }) {
     const params = await Promise.resolve(searchParams);
     const q = params?.q || "";
@@ -14,25 +22,23 @@ export default async function ShopPage({ searchParams }) {
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-    const [productsRes, categoriesRes] = await Promise.all([
-        fetch(baseUrl + "/api/products?" + query.toString(), {
-            cache: "no-store",
-        }),
-        fetch(baseUrl + "/api/categories", { cache: "no-store" }),
-    ]);
+    const productsRes = await fetch(baseUrl + "/api/products?" + query.toString(), {
+        cache: "no-store",
+    });
 
     const productsData = await productsRes
         .json()
         .catch(() => ({ products: [] }));
-    const categoriesData = await categoriesRes
-        .json()
-        .catch(() => ({ categories: [] }));
     const products = productsData?.products || [];
-    const dbCategories = categoriesData?.categories || [];
-    const categories = [
-        "All",
-        ...dbCategories.map((c) => c.displayName || c.name),
-    ];
+
+    const buildCategoryHref = (value) => {
+        const nextQuery = new URLSearchParams();
+        if (q) nextQuery.set("q", q);
+        if (value) nextQuery.set("category", value);
+        if (inStock) nextQuery.set("inStock", inStock);
+        const queryString = nextQuery.toString();
+        return queryString ? `/shop?${queryString}` : "/shop";
+    };
 
     return (
         <main className="mx-auto max-w-6xl px-4 py-10">
@@ -68,27 +74,31 @@ export default async function ShopPage({ searchParams }) {
                 </div>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-2">
-                {categories.map((c) => {
-                    const isAll = c === "All";
-                    const href = isAll
-                        ? "/shop"
-                        : `/shop?category=${encodeURIComponent(c)}`;
-                    const isActive = isAll ? !category : category === c;
-                    return (
-                        <Link
-                            key={c}
-                            href={href}
-                            className={`px-4 py-2 rounded-xl border text-sm font-medium transition-all ${
-                                isActive
-                                    ? "bg-amber-500 text-white border-amber-500 shadow-md"
-                                    : "bg-white/70 border-gray-200/50 text-soft-grey hover:text-charcoal hover:bg-white/90 hover:border-gray-300"
-                            }`}
-                        >
-                            {c}
-                        </Link>
-                    );
-                })}
+            <div className="mt-6">
+                <p className="mb-3 text-sm font-medium text-soft-grey">
+                    Filter by collection
+                </p>
+                <div className="flex flex-wrap gap-2">
+                    {categoryFilters.map((filter) => {
+                        const href = buildCategoryHref(filter.value);
+                        const isActive = filter.value
+                            ? category === filter.value
+                            : !category;
+                        return (
+                            <Link
+                                key={filter.label}
+                                href={href}
+                                className={`px-4 py-2 rounded-xl border text-sm font-medium transition-all ${
+                                    isActive
+                                        ? "bg-amber-500 text-white border-amber-500 shadow-md"
+                                        : "bg-white/70 border-gray-200/50 text-soft-grey hover:text-charcoal hover:bg-white/90 hover:border-gray-300"
+                                }`}
+                            >
+                                {filter.label}
+                            </Link>
+                        );
+                    })}
+                </div>
             </div>
 
             <div className="mt-8">

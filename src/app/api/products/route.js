@@ -19,7 +19,12 @@ export async function GET(req) {
 
         const filter = {};
 
-        if (category) filter.category = category;
+        if (category) {
+            filter.category = {
+                $regex: `^${category.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
+                $options: "i",
+            };
+        }
         if (inStock === "true") filter.inStock = true;
 
         if (q) {

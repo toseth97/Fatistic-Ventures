@@ -4,6 +4,8 @@ import AdminUser from "@/models/AdminUser";
 import { connectDB } from "@/lib/db";
 
 const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-change-me";
+const adminUsername = process.env.ADMIN_USERNAME?.trim().toLowerCase();
+const adminPassword = process.env.ADMIN_PASSWORD?.trim();
 
 export async function hashPassword(password) {
     return bcrypt.hash(password, 12);
@@ -33,25 +35,23 @@ export async function authenticateAdmin({ email, username, password } = {}) {
 
     if (!normalizedEmail && !normalizedUsername) return null;
 
-    // Hardcoded fallback credentials
-    const hardcodedUsername = "fatistic_admin";
-    const hardcodedPassword = "FatisticAdmin$";
-
-    if (
-        normalizedUsername === hardcodedUsername &&
-        password === hardcodedPassword
-    ) {
-        return {
-            id: "admin_hardcoded",
-            email: "admin@fatistic.com",
-            role: "admin",
-            token: signToken({
-                id: "admin_hardcoded",
+    if (adminUsername && adminPassword) {
+        if (
+            normalizedUsername === adminUsername &&
+            password === adminPassword
+        ) {
+            return {
+                id: "admin_env",
                 email: "admin@fatistic.com",
                 role: "admin",
-                username: hardcodedUsername,
-            }),
-        };
+                token: signToken({
+                    id: "admin_env",
+                    email: "admin@fatistic.com",
+                    role: "admin",
+                    username: adminUsername,
+                }),
+            };
+        }
     }
 
     // DB-based flow
