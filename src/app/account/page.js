@@ -133,6 +133,8 @@ export default function AccountPage() {
     }
 
     const user = profile || session?.user || {};
+    const avatar =
+        profile?.picture || session?.user?.image || session?.user?.picture || user?.picture || "";
     const displayName = user.name || "Valued customer";
     const initials = displayName
         .split(" ")
@@ -185,9 +187,9 @@ export default function AccountPage() {
             {/* Profile header */}
             <section className="card rounded-3xl p-6 sm:p-8" aria-label="Profile overview">
                 <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-                    {user.picture ? (
+                    {avatar ? (
                         <Image
-                            src={user.picture}
+                            src={avatar}
                             alt={`${displayName}'s profile`}
                             width={72}
                             height={72}

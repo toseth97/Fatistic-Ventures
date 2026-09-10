@@ -93,6 +93,7 @@ export default function Header() {
     }
 
     const user = session?.user;
+    const avatar = user?.image || user?.picture || "";
     const isActive = (href) =>
         href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -260,9 +261,9 @@ export default function Header() {
                             aria-label="Account menu"
                             aria-expanded={accountOpen}
                         >
-                            {mounted && user?.picture ? (
+                            {mounted && avatar ? (
                                 <Image
-                                    src={user.picture}
+                                    src={avatar}
                                     alt=""
                                     width={30}
                                     height={30}
@@ -281,9 +282,9 @@ export default function Header() {
                                     {mounted && user ? (
                                         <>
                                             <div className="flex items-center gap-3 px-3 py-2">
-                                                {user.picture && (
+                                                {avatar && (
                                                     <Image
-                                                        src={user.picture}
+                                                        src={avatar}
                                                         alt=""
                                                         width={40}
                                                         height={40}
@@ -421,8 +422,8 @@ export default function Header() {
                             {mounted && user ? (
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-3">
-                                        {user.picture && (
-                                            <Image src={user.picture} alt="" width={40} height={40} className="h-10 w-10 rounded-full object-cover" />
+                                        {avatar && (
+                                            <Image src={avatar} alt="" width={40} height={40} className="h-10 w-10 rounded-full object-cover" />
                                         )}
                                         <div className="min-w-0">
                                             <p className="truncate text-sm font-semibold text-ink">{user.name}</p>

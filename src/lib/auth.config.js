@@ -67,6 +67,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return true;
         },
         async jwt({ token, user, account, profile }) {
+            // Refresh from Google on each sign-in so a changed Google photo updates.
+            const gPicture = String(profile?.picture || user?.image || "").slice(0, 1000);
+            const gName = String(profile?.name || user?.name || "").slice(0, 120);
             if (account && user) {
                 let dbUser = null;
                 try {
@@ -74,11 +77,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 } catch (e) {
                     console.error("[auth] upsert failed", e?.message);
                 }
-                if (!dbUser) return token;
+                if (!dbUser) {
+                    // DB unavailable — still carry the Google identity in the token.
+                    if (gPicture) {
+                        token.picture = gPicture;
+                        token.image = gPicture;
+                    }
+                    if (gName) token.name = gName;
+                    return token;
+                }
                 token.userId = String(dbUser._id);
                 token.role = dbUser.role || "user";
-                token.picture = dbUser.picture || user.image || "";
-                token.name = dbUser.name || user.name || "";
+                // NextAuth convention is `image`; our app also reads `picture`.
+                // Store under both keys so either accessor always works.
+                const pic = dbUser.picture || gPicture || user.image || "";
+                token.picture = pic;
+                token.image = pic;
+                token.name = dbUser.name || gName || user.name || "";
+            } else if (gPicture && token.picture !== gPicture) {
+                // Re-sign-in with same session: pick up a changed Google photo.
+                token.picture = gPicture;
+                token.image = gPicture;
             }
             return token;
         },
@@ -86,7 +105,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if (session.user) {
                 session.user.id = token.userId || null;
                 session.user.role = token.role || "user";
-                session.user.image = token.picture || session.user.image || "";
+                // Expose the Google photo under both keys.
+                const pic = token.picture || token.image || session.user.image || "";
+                session.user.image = pic;
+                session.user.picture = pic;
                 session.user.name = token.name || session.user.name || "";
             }
             return session;
