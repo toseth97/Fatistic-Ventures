@@ -3,10 +3,18 @@ import bcrypt from "bcryptjs";
 import AdminUser from "@/models/AdminUser";
 import { connectDB } from "@/lib/db";
 
-const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-change-me";
+const JWT_SECRET =
+    process.env.JWT_SECRET || process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+
+if (!JWT_SECRET && process.env.NODE_ENV === "production") {
+    throw new Error("JWT_SECRET is required in production");
+}
+const JWT_ISSUER = "fatistic-admin";
+const JWT_AUDIENCE = "fatistic-admin-dashboard";
 const adminUsername = process.env.ADMIN_USERNAME?.trim().toLowerCase();
 const adminPassword = process.env.ADMIN_PASSWORD?.trim();
-const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase() ||
+const adminEmail =
+    process.env.ADMIN_EMAIL?.trim().toLowerCase() ||
     (adminUsername ? `${adminUsername}@fatistic.com` : "admin@fatistic.com");
 
 export async function hashPassword(password) {
@@ -18,12 +26,19 @@ export async function verifyPassword(password, hashedPassword) {
 }
 
 export function signToken(payload) {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
+    return jwt.sign(payload, JWT_SECRET, {
+        expiresIn: "7d",
+        issuer: JWT_ISSUER,
+        audience: JWT_AUDIENCE,
+    });
 }
 
 export function verifyToken(token) {
     try {
-        return jwt.verify(token, JWT_SECRET);
+        return jwt.verify(token, JWT_SECRET, {
+            issuer: JWT_ISSUER,
+            audience: JWT_AUDIENCE,
+        });
     } catch {
         return null;
     }

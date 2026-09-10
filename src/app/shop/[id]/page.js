@@ -1,193 +1,179 @@
 import Link from "next/link";
-import GlassCard from "@/components/ui/GlassCard";
-import GlassButton from "@/components/ui/GlassButton";
+import { notFound } from "next/navigation";
+import { connectDB } from "@/lib/db";
+import Product from "@/models/Product";
+import Category from "@/models/Category";
+import ProductDetail from "./ProductDetail";
+import ProductCard from "@/components/ProductCard";
 import { getWhatsAppLink } from "@/lib/whatsapp";
-import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const BASE_WHATSAPP = process.env.WHATSAPP_BASE_NUMBER || "08062572564";
+
+function isMongoId(id) {
+    return /^[a-f\d]{24}$/i.test(String(id || ""));
+}
+
+async function getProduct(idOrSlug) {
+    try {
+        await connectDB();
+        const query = isMongoId(idOrSlug)
+            ? { _id: idOrSlug }
+            : { slug: String(idOrSlug || "").toLowerCase() };
+        return await Product.findOne({ ...query, published: true }).lean();
+    } catch {
+        return null;
+    }
+}
+
+export async function generateMetadata({ params }) {
+    const { id } = (await params) || {};
+    const product = await getProduct(id);
+    if (!product) {
+        return { title: "Product not found" };
+    }
+    const description =
+        (product.description || "").slice(0, 155) ||
+        `Shop ${product.name} — premium Nigerian fabric from Fatistic Ventures.`;
+    const image = product.images?.[0]?.url;
+    return {
+        title: product.name,
+        description,
+        alternates: { canonical: `/shop/${product.slug || product._id}` },
+        openGraph: {
+            type: "website",
+            title: `${product.name} | Fatistic Ventures`,
+            description,
+            ...(image ? { images: [{ url: image }] } : {}),
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: product.name,
+            description,
+            ...(image ? { images: [image] } : {}),
+        },
+    };
+}
 
 export default async function ProductPage({ params }) {
-    const productRes = await fetch(
-        (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") +
-            "/api/products/" +
-            params.id,
-        { cache: "no-store" },
-    );
+    const { id } = (await params) || {};
+    const product = await getProduct(id);
+    if (!product) notFound();
 
-    const data = await productRes.json().catch(() => null);
-    const product = data?.product;
+    const category = await (async () => {
+        try {
+            if (!product.categoryId) return null;
+            await connectDB();
+            return await Category.findById(product.categoryId).lean();
+        } catch {
+            return null;
+        }
+    })();
+    const categoryName = category?.displayName || category?.name || product.category || "";
 
-    if (!product) {
-        return (
-            <main className="mx-auto max-w-6xl px-4 py-10">
-                <div className="glass-card p-8 text-center">
-                    <div className="text-4xl mb-3">🧵</div>
-                    <div className="text-charcoal font-semibold text-lg">
-                        Product not found
-                    </div>
-                    <Link
-                        href="/shop"
-                        className="text-gold-600 mt-4 inline-block hover:text-gold-700"
-                    >
-                        ← Back to shop
-                    </Link>
-                </div>
-            </main>
-        );
+    // Related products: same category, published, not this product.
+    let related = [];
+    try {
+        const relatedFilter = {
+            published: true,
+            _id: { $ne: product._id },
+            $or: [
+                ...(product.categoryId ? [{ categoryId: product.categoryId }] : []),
+                { category: product.category },
+            ],
+        };
+        related = await Product.find(relatedFilter).sort({ featured: -1, createdAt: -1 }).limit(4).lean();
+    } catch {
+        related = [];
     }
 
-    const price =
-        typeof product.price === "number"
-            ? product.price
-            : Number(product.price || 0);
-    const images = product.images || [];
-    const heroImg = images?.[0]?.url;
-
-    const baseWhatsApp = process.env.WHATSAPP_BASE_NUMBER || "08062572564";
+    const price = Number(product.price) || 0;
+    const productUrl = `${SITE_URL}/shop/${product.slug || product._id}`;
     const waHref = getWhatsAppLink({
-        baseNumber: baseWhatsApp,
+        baseNumber: BASE_WHATSAPP,
         productName: product.name,
         priceNaira: price,
     });
 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: product.name,
+        description: (product.description || "").slice(0, 500),
+        category: categoryName || undefined,
+        url: productUrl,
+        ...(product.images?.[0]?.url ? { image: product.images.map((i) => i.url).slice(0, 5) } : {}),
+        offers: {
+            "@type": "Offer",
+            url: productUrl,
+            priceCurrency: "NGN",
+            price: price,
+            availability:
+                product.inStock === false || Number(product.quantity) <= 0
+                    ? "https://schema.org/OutOfStock"
+                    : "https://schema.org/InStock",
+            itemCondition: "https://schema.org/NewCondition",
+        },
+    };
+
     return (
-        <main className="mx-auto max-w-6xl px-4 py-10">
-            <BreadcrumbJsonLd
-                items={[
-                    { name: "Home", url: "/" },
-                    { name: "Shop", url: "/shop" },
-                    {
-                        name: product.category,
-                        url: `/shop?category=${encodeURIComponent(product.category)}`,
-                    },
-                    { name: product.name, url: `/shop/${params.id}` },
-                ]}
+        <main className="shell py-8">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
             />
 
-            <nav className="text-sm text-soft-grey mb-6">
-                <Link
-                    href="/"
-                    className="hover:text-charcoal transition-colors"
-                >
-                    Home
-                </Link>
-                <span className="mx-2">/</span>
-                <Link
-                    href="/shop"
-                    className="hover:text-charcoal transition-colors"
-                >
-                    Shop
-                </Link>
-                <span className="mx-2">/</span>
-                <Link
-                    href={`/shop?category=${encodeURIComponent(product.category)}`}
-                    className="hover:text-charcoal transition-colors"
-                >
-                    {product.category}
-                </Link>
-                <span className="mx-2">/</span>
-                <span className="text-charcoal">{product.name}</span>
+            {/* Breadcrumb */}
+            <nav aria-label="Breadcrumb" className="mb-6 text-sm text-soft-grey">
+                <ol className="flex flex-wrap items-center gap-1.5">
+                    <li><Link href="/" className="hover:text-brand">Home</Link></li>
+                    <li aria-hidden="true">/</li>
+                    <li><Link href="/shop" className="hover:text-brand">Shop</Link></li>
+                    {categoryName && (
+                        <>
+                            <li aria-hidden="true">/</li>
+                            <li>
+                                <Link
+                                    href={`/shop?category=${encodeURIComponent(category?.slug || product.category || "")}`}
+                                    className="hover:text-brand"
+                                >
+                                    {categoryName}
+                                </Link>
+                            </li>
+                        </>
+                    )}
+                    <li aria-hidden="true">/</li>
+                    <li className="max-w-[16rem] truncate font-medium text-ink" aria-current="page">
+                        {product.name}
+                    </li>
+                </ol>
             </nav>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <GlassCard className="p-0 overflow-hidden">
-                    {heroImg ? (
-                        <img
-                            src={heroImg}
-                            alt={product.name}
-                            className="w-full h-[440px] object-cover"
-                        />
-                    ) : (
-                        <div className="w-full h-[440px] bg-gray-100 flex items-center justify-center text-soft-grey">
-                            No image available
+            <ProductDetail
+                product={JSON.parse(JSON.stringify(product))}
+                categoryName={categoryName}
+                whatsappHref={waHref}
+            />
+
+            {related.length > 0 && (
+                <section className="mt-16" aria-label="Related products">
+                    <div className="section-head">
+                        <div>
+                            <p className="eyebrow">You may also like</p>
+                            <h2 className="section-title mt-1 text-2xl sm:text-3xl">Related Fabrics</h2>
                         </div>
-                    )}
-                    {images.length > 1 ? (
-                        <div className="p-4 flex gap-3 overflow-x-auto border-t border-gray-200/50">
-                            {images.slice(0, 6).map((img) => (
-                                <img
-                                    key={img.publicId}
-                                    src={img.url}
-                                    alt={product.name}
-                                    className="w-20 h-20 object-cover rounded-glass-sm border border-gray-200/50 flex-shrink-0"
-                                />
-                            ))}
-                        </div>
-                    ) : null}
-                </GlassCard>
-
-                <div>
-                    <div className="glass-card p-6">
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-gold-50 text-gold-700 font-medium">
-                            {product.category}
-                        </span>
-
-                        <h1 className="font-display text-3xl font-semibold text-charcoal mt-3">
-                            {product.name}
-                        </h1>
-
-                        <p className="text-gold-600 font-semibold mt-3 text-2xl">
-                            ₦{price.toLocaleString()}
-                        </p>
-
-                        <p className="mt-4 text-soft-grey leading-relaxed">
-                            {product.description || ""}
-                        </p>
-
-                        <div className="mt-2 flex items-center gap-2 text-sm">
-                            <span
-                                className={`w-2 h-2 rounded-full ${product.inStock ? "bg-emerald-500" : "bg-red-400"}`}
-                            />
-                            <span className="text-soft-grey">
-                                {product.inStock ? "In Stock" : "Out of Stock"}
-                            </span>
-                        </div>
-
-                        <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                            <a
-                                href={waHref}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="flex-1"
-                                onClick={async () => {
-                                    try {
-                                        await fetch("/api/analytics/track", {
-                                            method: "POST",
-                                            headers: {
-                                                "Content-Type":
-                                                    "application/json",
-                                            },
-                                            body: JSON.stringify({
-                                                type: "whatsapp_click",
-                                                productId: product._id,
-                                                meta: {},
-                                            }),
-                                        });
-                                    } catch (_) {}
-                                }}
-                            >
-                                <GlassButton
-                                    className="w-full hover:shadow-glow"
-                                    variant="gold"
-                                >
-                                    Order via WhatsApp
-                                </GlassButton>
-                            </a>
-
-                            <Link href="/shop" className="flex-1">
-                                <GlassButton
-                                    className="w-full"
-                                    variant="emerald"
-                                >
-                                    Keep Browsing
-                                </GlassButton>
-                            </Link>
-                        </div>
-
-                        <p className="mt-4 text-xs text-soft-grey text-center">
-                            Delivery nationwide and worldwide
-                        </p>
+                        <Link href="/shop" className="hidden text-sm font-medium text-brand hover:underline sm:block">
+                            View all →
+                        </Link>
                     </div>
-                </div>
-            </div>
+                    <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+                        {related.map((p) => (
+                            <ProductCard key={p._id} product={p} />
+                        ))}
+                    </div>
+                </section>
+            )}
         </main>
     );
 }
+

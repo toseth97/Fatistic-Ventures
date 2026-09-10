@@ -13,7 +13,12 @@ export default function AdminProductsPage() {
 
     async function fetchProducts() {
         try {
-            const res = await fetch("/api/products");
+            const token = localStorage.getItem("admin_token");
+            const res = await fetch("/api/products?limit=60", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error);
             setProducts(data.products || []);

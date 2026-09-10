@@ -2,25 +2,64 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageTracker from "@/components/PageTracker";
-import AuthSessionProvider from "@/context/SessionProvider";
+import Providers from "@/components/Providers";
 
 export const metadata = {
-    title: "Fatistic Ventures — Aso-Oke Guru",
+    metadataBase: new URL(
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+    ),
+    title: {
+        default: "Fatistic Ventures — Premium Nigerian Fabrics & Aso-Oke",
+        template: "%s | Fatistic Ventures",
+    },
     description:
-        "Aso-Oke Guru — Luxury | Quality | Elegance. Premium Nigerian fabrics delivered nationwide and worldwide.",
+        "Shop premium Nigerian fabrics — Aso-Oke, Gele, Ankara, Lace, Damask and more. Luxury fabrics delivered nationwide and worldwide.",
+    applicationName: "Fatistic Ventures",
+    category: "shopping",
+    keywords: [
+        "Nigerian fabrics",
+        "Aso-Oke",
+        "Gele",
+        "Ankara",
+        "Lace",
+        "Damask",
+        "Fatistic Ventures",
+        "Lagos fabrics",
+    ],
+    creator: "Fatistic Ventures",
+    publisher: "Fatistic Ventures",
+    alternates: {
+        canonical: "/",
+    },
     openGraph: {
-        title: "Fatistic Ventures — Aso-Oke Guru",
-        description:
-            "Premium Nigerian fabrics — Aso-Oke, Gele, and Damask — delivered nationwide and worldwide.",
         type: "website",
         locale: "en_NG",
         siteName: "Fatistic Ventures",
+        title: "Fatistic Ventures — Premium Nigerian Fabrics",
+        description:
+            "Premium Nigerian fabrics — Aso-Oke, Gele, Ankara, Lace and Damask — delivered nationwide and worldwide.",
     },
+    twitter: {
+        card: "summary_large_image",
+        title: "Fatistic Ventures — Premium Nigerian Fabrics",
+        description:
+            "Premium Nigerian fabrics — Aso-Oke, Gele, Ankara, Lace and Damask.",
+    },
+    robots: {
+        index: true,
+        follow: true,
+    },
+};
+
+export const viewport = {
+    width: "device-width",
+    initialScale: 1,
+    themeColor: "#b70b68",
 };
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en" data-scroll-behavior="smooth">
+        <html lang="en">
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link
@@ -33,15 +72,13 @@ export default function RootLayout({ children }) {
                     rel="stylesheet"
                 />
             </head>
-            <body className="min-h-screen bg-gradient-to-br from-cream via-white to-accent/10 text-charcoal antialiased font-sans overflow-x-hidden">
-                <AuthSessionProvider>
+            <body className="flex min-h-screen flex-col bg-surface-2 text-ink antialiased">
+                <Providers>
                     <Header />
-                    <main className="min-h-screen pt-8 md:pt-18">
-                        {children}
-                    </main>
+                    <main className="flex-1">{children}</main>
                     <Footer />
                     <PageTracker />
-                </AuthSessionProvider>
+                </Providers>
             </body>
         </html>
     );
