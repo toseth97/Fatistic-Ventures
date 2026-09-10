@@ -7,6 +7,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useCart } from "@/context/CartContext";
+import BrandLogo from "@/components/BrandLogo";
 import { IconBag, IconSearch, IconUser, IconMenu, IconClose, IconChevron } from "@/components/Icons";
 
 const NAV_LINKS = [
@@ -119,14 +120,7 @@ export default function Header() {
 
             <div className="container-x flex h-16 items-center justify-between gap-4">
                 {/* Logo */}
-                <Link href="/" className="flex shrink-0 items-baseline gap-1" aria-label="Fatistic Ventures home">
-                    <span className="font-display text-2xl font-bold tracking-tight text-ink">
-                        Fatistic<span className="text-brand">.</span>
-                    </span>
-                    <span className="hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-soft-grey md:inline">
-                        Ventures
-                    </span>
-                </Link>
+                <BrandLogo variant="header" />
 
                 {/* Desktop nav */}
                 <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
@@ -355,9 +349,7 @@ export default function Header() {
                     />
                     <div className="absolute inset-y-0 right-0 flex w-full max-w-xs flex-col bg-white shadow-2xl">
                         <div className="flex h-16 items-center justify-between border-b border-border px-5">
-                            <span className="font-display text-xl font-bold text-ink">
-                                Fatistic<span className="text-brand">.</span>
-                            </span>
+                            <BrandLogo variant="compact" />
                             <button
                                 type="button"
                                 onClick={() => setMobileOpen(false)}

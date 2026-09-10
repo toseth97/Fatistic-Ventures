@@ -38,12 +38,18 @@ export const metadata = {
         title: "Fatistic Ventures — Premium Nigerian Fabrics",
         description:
             "Premium Nigerian fabrics — Aso-Oke, Gele, Ankara, Lace and Damask — delivered nationwide and worldwide.",
+        images: [{ url: "/images/LOGO.png", width: 500, height: 500, alt: "Fatistic Ventures logo" }],
     },
     twitter: {
         card: "summary_large_image",
         title: "Fatistic Ventures — Premium Nigerian Fabrics",
         description:
             "Premium Nigerian fabrics — Aso-Oke, Gele, Ankara, Lace and Damask.",
+        images: ["/images/LOGO.png"],
+    },
+    icons: {
+        icon: "/images/LOGO.png",
+        apple: "/images/LOGO.png",
     },
     robots: {
         index: true,

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function AdminLayout({ children }) {
     const router = useRouter();
@@ -54,15 +55,7 @@ export default function AdminLayout({ children }) {
                 {/* Sidebar */}
                 <aside className="hidden md:flex flex-col w-64 min-h-screen backdrop-blur-xl bg-white/80 border-r border-gray-200/50 shadow-sm">
                     <div className="p-6 border-b border-gray-200/50">
-                        <Link
-                            href="/admin"
-                            className="font-display text-lg font-semibold text-charcoal"
-                        >
-                            Fatistic<span className="text-gold-600">.</span>{" "}
-                            <span className="text-xs text-soft-grey font-sans font-normal">
-                                Admin
-                            </span>
-                        </Link>
+                        <BrandLogo variant="compact" href="/admin" />
                     </div>
 
                     <nav className="flex-1 p-4 space-y-1">
@@ -106,8 +99,9 @@ export default function AdminLayout({ children }) {
                         <Link
                             href="/admin"
                             className="font-display text-lg font-semibold text-charcoal"
+                            aria-label="Fatistic Ventures admin"
                         >
-                            Fatistic<span className="text-gold-600">.</span>
+                            <BrandLogo variant="compact" href={null} />
                         </Link>
                         <div className="flex items-center gap-2">
                             <Link

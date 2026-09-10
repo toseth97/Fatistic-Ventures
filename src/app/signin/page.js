@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
+import BrandLogo from "@/components/BrandLogo";
 
 function GoogleIcon() {
     return (
@@ -52,10 +53,8 @@ export default function SignInPage() {
         <main className="shell flex min-h-[70vh] items-center justify-center py-14">
             <div className="card w-full max-w-md rounded-3xl p-8 sm:p-10">
                 <div className="text-center">
-                    <Link href="/" className="inline-block">
-                        <span className="font-display text-3xl font-bold text-ink">
-                            Fatistic<span className="text-brand">.</span>
-                        </span>
+                    <Link href="/" className="inline-flex justify-center">
+                        <BrandLogo variant="compact" />
                     </Link>
                     <h1 className="mt-5 font-display text-2xl font-bold text-ink">Welcome back</h1>
                     <p className="mt-2 text-sm text-soft-grey">

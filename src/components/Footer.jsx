@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandLogo from "@/components/BrandLogo";
 import { connectDB } from "@/lib/db";
 import SiteSetting from "@/models/SiteSetting";
 
@@ -59,9 +60,7 @@ export default async function Footer() {
             <div className="container-x grid grid-cols-2 gap-10 py-12 md:grid-cols-5">
                 {/* Brand */}
                 <div className="col-span-2">
-                    <p className="font-display text-2xl font-bold text-ink">
-                        Fatistic<span className="text-brand">.</span>
-                    </p>
+                    <BrandLogo variant="footer" />
                     <p className="mt-3 max-w-sm text-sm leading-relaxed text-soft-grey">
                         Premium Nigerian fabrics — Aso-Oke, Gele, Ankara, Lace,
                         Damask and more — delivered nationwide and worldwide
